@@ -10,7 +10,7 @@ pygame.display.set_caption("Graphics")
 clock = pygame.time.Clock()
 sc = pygame.display.set_mode((WIDTH, HEIGHT))
 def cel(x):
-    return x
+    return x * x / 2
 def activation(x):
     #x = min(-2, max(x, 2))
     return 1 / (1 + math.exp(-x)) * 2 - 1
@@ -46,8 +46,7 @@ for i in range(100000):
         y += deep[j] * w[1][j] + bias[1]
     y = round(y, 10)
     #print('y -',y)
-    print(cel(x), y)
-    print('err -', cel(x) - y)
+    #print('err -', cel(x) - y)
     h = 0.0001
     '''for j in range(len(w)):
         for k in range(len(w[0])):
@@ -69,24 +68,24 @@ for i in range(100000):
             print('s -',s)
             w[j][k] -= s * learnRate'''
     #print(w)
-    for j in range(1):
+    for k in range(len(bias)):
         hy = 0
         for j in range(len(deep)):
-            if j == 0:
+            if k == 0:
                 deep[j] = activation(x * w[0][j] + bias[0] + h)
             else:
                 deep[j] = activation(x * w[0][j] + bias[0])
         for j in range(len(deep)):
-            if j == 1:
+            if k == 1:
                 hy += deep[j] * w[1][j] + bias[1] + h
             else:
                 hy += deep[j] * w[1][j] + bias[1]
         hy = round(hy, 10)
         d = abs(cel(x) - round(y, 10)) - abs(cel(x) - round(hy, 10))
         s = d / h
-        bias[j] += s * learnRate
+        bias[k] += s * learnRate
     print(bias)
-    if(i % 100 == 0):
+    if(i % 1 == 0):
         zoomy = 100
         screen.fill((0,0,0))
         light = 100
@@ -113,10 +112,7 @@ for i in range(100000):
 x = 1
 hy = 0
 for l in range(len(deep)):
-    if(j == 0 and k == l):
-        deep[l] = activation(x * (w[0][l] + h) + bias[0])
-    else:
-        deep[l] = activation(x * w[0][l] + bias[0])
+    deep[l] = activation(x * w[0][l] + bias[0])
 for l in range(len(deep)):
     hy += deep[l] * w[1][l] + bias[1]
 hy = round(activation(hy), 10)
@@ -124,10 +120,7 @@ serr = cel(x) - hy
 while x < end:
     hy = 0
     for l in range(len(deep)):
-        if (j == 0 and k == l):
-            deep[l] = activation(x * (w[0][l] + h) + bias[0])
-        else:
-            deep[l] = activation(x * w[0][l] + bias[0])
+        deep[l] = activation(x * w[0][l] + bias[0])
     for l in range(len(deep)):
         hy += deep[l] * w[1][l] + bias[1]
     hy = round(activation(hy), 10)
