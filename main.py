@@ -20,7 +20,7 @@ y = 0
 w = [0] * 2
 deep = [0] * 1
 bias = [0] * 2
-learnRate = 0.0001
+learnRate = 0.00001
 start = 0
 end = 1
 
@@ -43,7 +43,7 @@ for i in range(1000000):
         deep[j] = activation(x * w[0][j] + bias[0])
     for j in range(len(deep)):
         y += deep[j] * w[1][j] + bias[1]
-    y = round(y, 10)
+    y = round(y, 100)
     #print('y -',y)
     #print('err -', cel(x) - y)
     h = learnRate
@@ -59,8 +59,8 @@ for i in range(1000000):
                 hy += deep[j] * w[1][j] + bias[1] + h
             else:
                 hy += deep[j] * w[1][j] + bias[1]
-        hy = round(hy, 10)
-        d = abs(cel(x) - round(y, 10)) - abs(cel(x) - round(hy, 10))
+        hy = round(hy, 100)
+        d = abs(cel(x) - y) - abs(cel(x) - hy)
         s = d / h
         bias[k] += s * learnRate
     for j in range(len(w)):
@@ -76,13 +76,14 @@ for i in range(1000000):
                     hy += deep[l] * (w[1][l] + h) + bias[1]
                 else:
                     hy += deep[l] * w[1][l] + bias[1]
-            hy = round(hy, 10)
+            hy = round(hy, 100)
             d = (cel(x) - y) - (cel(x) - hy)
             s = d / h
-            print(d, s)
+            #print(d, s)
             w[j][k] += s * learnRate
-    print(w)
-    if(i % 1000 == 0):
+    print('w -',w)
+    print('bias -',bias)
+    if(i % 5000 == 0):
         zoomy = 100
         screen.fill((0,0,0))
         light = 100
